@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart'; // السطر الجديد ده
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'features/chat/presentation/chat_screen.dart';
 
 void main() {
+  // لالتقاط أي خطأ وعرضه باللون الأحمر لتسهيل اكتشاف المشاكل
   ErrorWidget.builder = (FlutterErrorDetails details) {
     return Container(
       color: Colors.red,
@@ -31,7 +32,6 @@ class MohamedAiApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       locale: const Locale('ar', 'EG'),
       supportedLocales: const [Locale('ar', 'EG'), Locale('en')],
-      // السطور دي هي اللي بتفعل الترجمة
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
