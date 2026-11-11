@@ -9,12 +9,16 @@ class ChatRepository {
   final String supabaseUrl = 'https://zowpjqkkwacfzomfcqxu.supabase.co/functions/v1/super-handler';
   final String supabaseAnonKey = 'sb_publishable_qC70BeNwXBj2nYLxeWriPg_Y_uKJkoh';
 
-  // 1. جلب الرسائل القديمة من الداتابيز
+  // 1. جلب الرسائل الخاصة بالمستخدم الحالي فقط
   Future<List<ChatMessage>> getMessages() async {
     try {
+      final userId = _supabase.auth.currentUser?.id;
+      if (userId == null) return [];
+
       final response = await _supabase
           .from('messages')
           .select()
+          .eq('user_id', userId) // الفلترة هنا
           .order('created_at', ascending: true);
 
       return (response as List).map((json) => ChatMessage(
@@ -27,15 +31,19 @@ class ChatRepository {
     }
   }
 
-  // 2. حفظ الرسالة في الداتابيز
+  // 2. حفظ الرسالة وربطها بالمستخدم
   Future<void> saveMessage(ChatMessage msg) async {
     try {
+      final userId = _supabase.auth.currentUser?.id;
+      if (userId == null) return;
+
       await _supabase.from('messages').insert({
         'content': msg.text,
         'is_user': msg.isUser,
+        'user_id': userId, // ربط الرسالة بالمستخدم
       });
     } catch (e) {
-      // تجاهل الخطأ مؤقتاً لو النت فصل
+      // تجاهل الخطأ
     }
   }
 
