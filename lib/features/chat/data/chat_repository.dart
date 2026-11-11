@@ -64,7 +64,7 @@ class ChatRepository {
         final data = jsonDecode(response.body);
         return data['reply'] ?? 'مفيش رد.';
       } else {
-        return 'المساعد مشغول حالياً، جرب تاني.';
+        return 'خطأ (${response.statusCode}): ${response.body}';
       }
     } catch (e) {
       return 'مشكلة في الاتصال بالإنترنت.';
