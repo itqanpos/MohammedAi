@@ -7,11 +7,16 @@ import 'features/chat/presentation/chat_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // الاتصال بـ Supabase
   await Supabase.initialize(
     url: 'https://zowpjqkkwacfzomfcqxu.supabase.co',
     anonKey: 'sb_publishable_qC70BeNwXBj2nYLxeWriPg_Y_uKJkoh',
   );
+
+  // تسجيل دخول تلقائي (مخفي) لو مفيش مستخدم
+  final auth = Supabase.instance.client.auth;
+  if (auth.currentSession == null) {
+    await auth.signInAnonymously();
+  }
 
   runApp(const ProviderScope(child: MohamedAiApp()));
 }
@@ -33,7 +38,7 @@ class MohamedAiApp extends StatelessWidget {
       ],
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF00897B), // لون تيل احترافي
+          seedColor: const Color(0xFF00897B),
           brightness: Brightness.light,
         ),
         useMaterial3: true,
