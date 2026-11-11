@@ -3,46 +3,51 @@ import '../domain/chat_message.dart';
 import '../data/chat_repository.dart';
 
 class ChatController extends Notifier<List<ChatMessage>> {
+  final _repo = ChatRepository();
+  bool isLoading = false;
+
   @override
   List<ChatMessage> build() {
-    return [
-      ChatMessage(
-        text: 'أهلاً بك! أنا محمد AI. كيف يمكنني مساعدتك اليوم؟',
-        isUser: false,
-        timestamp: DateTime.now(),
-      )
-    ];
+    _loadHistory(); // تحميل الرسائل القديمة أول ما التطبيق يفتح
+    return [];
+  }
+
+  Future<void> _loadHistory() async {
+    final history = await _repo.getMessages();
+    if (history.isEmpty) {
+      state = [
+        ChatMessage(text: 'أهلاً بك! أنا محمد AI. اسألني أي حاجة.', isUser: false, timestamp: DateTime.now())
+      ];
+    } else {
+      state = history;
+    }
   }
 
   Future<void> sendMessage(String text) async {
     if (text.trim().isEmpty) return;
 
-    // 1. إضافة رسالة المستخدم
+    final userMsg = ChatMessage(text: text, isUser: true, timestamp: DateTime.now());
+    
+    // 1. إضافة الرسالة للشاشة
+    state = [...state, userMsg];
+    // 2. حفظها في الداتابيز
+    await _repo.saveMessage(userMsg);
+
+    // 3. إظهار مؤشر التحميل
+    isLoading = true;
+    state = [...state, ChatMessage(text: '...', isUser: false, timestamp: DateTime.now())];
+
+    // 4. جلب الرد
+    final replyText = await _repo.getAiResponse(text);
+    final aiMsg = ChatMessage(text: replyText, isUser: false, timestamp: DateTime.now());
+
+    // 5. مسح المؤشر وإضافة الرد وحفظه
     state = [
-      ...state,
-      ChatMessage(text: text, isUser: true, timestamp: DateTime.now()),
+      ...state.sublist(0, state.length - 1),
+      aiMsg
     ];
-
-    // 2. إضافة رسالة مؤقتة (بيانات انتظار)
-    final loadingMessage = ChatMessage(
-      text: '... جاري التفكير',
-      isUser: false,
-      timestamp: DateTime.now(),
-    );
-    state = [...state, loadingMessage];
-
-    // 3. جلب الرد من Supabase
-    final repo = ChatRepository();
-    final reply = await repo.getAiResponse(text);
-
-    // 4. مسح رسالة الانتظار وإضافة الرد الحقيقي
-    final currentMessages = List<ChatMessage>.from(state);
-    currentMessages.removeLast(); // إزالة رسالة "... جاري التفكير"
-    currentMessages.add(
-      ChatMessage(text: reply, isUser: false, timestamp: DateTime.now()),
-    );
-
-    state = currentMessages;
+    await _repo.saveMessage(aiMsg);
+    isLoading = false;
   }
 }
 
