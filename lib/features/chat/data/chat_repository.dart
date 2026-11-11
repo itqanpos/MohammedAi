@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ChatRepository {
-  // الرابط بتاعك الثابت
-  final String supabaseUrl = 'https://zowpjqkkwacfzomfcqxu.supabase.co/functions/v1/rapid-handler';
+  // الرابط الجديد بتاعك
+  final String supabaseUrl = 'https://zowpjqkkwacfzomfcqxu.supabase.co/functions/v1/super-handler';
   
-  // المفتاح بتاعك الجاهز
+  // المفتاح بتاعك (اللي بيبدأ بـ sb_publishable_)
   final String supabaseAnonKey = 'sb_publishable_qC70BeNwXBj2nYLxeWriPg_Y_uKJkoh';
 
   Future<String> getAiResponse(String message) async {
