@@ -32,29 +32,26 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       appBar: AppBar(
         title: const Text('محمد AI'),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        backgroundColor: Colors.teal.shade100,
       ),
       body: Column(
         children: [
           Expanded(
             child: ListView.builder(
-              reverse: true, // السر هنا: بيخلي الرسائل تبدأ من تحت وتروح لفوق
+              reverse: true,
               padding: const EdgeInsets.all(16),
               itemCount: messages.length,
               itemBuilder: (context, index) {
-                // بنعكس الترتيب عشان تظهر صح مع reverse
                 final message = messages[messages.length - 1 - index];
                 final isUser = message.isUser;
-                
+
                 return Align(
                   alignment: isUser ? Alignment.centerLeft : Alignment.centerRight,
                   child: Container(
                     margin: const EdgeInsets.symmetric(vertical: 4),
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     decoration: BoxDecoration(
-                      color: isUser
-                          ? Theme.of(context).colorScheme.primary
-                          : Theme.of(context).colorScheme.surfaceVariant,
+                      color: isUser ? Colors.teal : Colors.grey.shade300,
                       borderRadius: BorderRadius.only(
                         topLeft: const Radius.circular(16),
                         topRight: const Radius.circular(16),
@@ -65,9 +62,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     child: Text(
                       message.text,
                       style: TextStyle(
-                        color: isUser
-                            ? Theme.of(context).colorScheme.onPrimary
-                            : Theme.of(context).colorScheme.onSurfaceVariant,
+                        color: isUser ? Colors.white : Colors.black87,
                         fontSize: 16,
                       ),
                     ),
@@ -76,18 +71,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               },
             ),
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  offset: const Offset(0, -2),
-                  blurRadius: 4,
-                ),
-              ],
-            ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
                 Expanded(
@@ -102,14 +87,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                         borderSide: BorderSide.none,
                       ),
                       filled: true,
-                      fillColor: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.5),
+                      fillColor: Colors.grey.shade200,
                       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
                     ),
                   ),
                 ),
                 const SizedBox(width: 8),
                 CircleAvatar(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  backgroundColor: Colors.teal,
                   child: IconButton(
                     icon: const Icon(Icons.send, color: Colors.white),
                     onPressed: () {
