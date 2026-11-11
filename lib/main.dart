@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'core/router/app_router.dart';
+import 'features/chat/presentation/chat_screen.dart';
 
 void main() {
   runApp(const ProviderScope(child: MohamedAiApp()));
@@ -11,10 +11,9 @@ class MohamedAiApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    return MaterialApp(
       title: 'Mohamed AI',
       debugShowCheckedModeBanner: false,
-      routerConfig: appRouter,
       locale: const Locale('ar', 'EG'),
       supportedLocales: const [Locale('ar', 'EG'), Locale('en')],
       theme: ThemeData(
@@ -26,6 +25,7 @@ class MohamedAiApp extends StatelessWidget {
         textDirection: TextDirection.rtl,
         child: child ?? const SizedBox(),
       ),
+      home: const ChatScreen(), // فتح شاشة الشات مباشرة
     );
   }
 }
