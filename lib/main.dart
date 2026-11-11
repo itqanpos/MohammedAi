@@ -1,23 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'features/chat/presentation/chat_screen.dart';
 
-void main() {
-  // لالتقاط أي خطأ وعرضه باللون الأحمر لتسهيل اكتشاف المشاكل
-  ErrorWidget.builder = (FlutterErrorDetails details) {
-    return Container(
-      color: Colors.red,
-      padding: const EdgeInsets.all(20),
-      child: Center(
-        child: Text(
-          'خطأ:\n${details.exceptionAsString()}',
-          style: const TextStyle(color: Colors.white, fontSize: 16),
-          textAlign: TextAlign.center,
-        ),
-      ),
-    );
-  };
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // الاتصال بـ Supabase
+  await Supabase.initialize(
+    url: 'https://zowpjqkkwacfzomfcqxu.supabase.co',
+    anonKey: 'sb_publishable_qC70BeNwXBj2nYLxeWriPg_Y_uKJkoh',
+  );
 
   runApp(const ProviderScope(child: MohamedAiApp()));
 }
@@ -38,7 +32,10 @@ class MohamedAiApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF00897B), // لون تيل احترافي
+          brightness: Brightness.light,
+        ),
         useMaterial3: true,
         fontFamily: 'Cairo',
       ),
