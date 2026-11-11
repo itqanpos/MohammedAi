@@ -7,15 +7,21 @@ import 'features/chat/presentation/chat_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  await Supabase.initialize(
-    url: 'https://zowpjqkkwacfzomfcqxu.supabase.co',
-    anonKey: 'sb_publishable_qC70BeNwXBj2nYLxeWriPg_Y_uKJkoh',
-  );
+  try {
+    // بنحاول نتصل بـ Supabase، بس بحد أقصى 10 ثواني
+    await Supabase.initialize(
+      url: 'https://zowpjqkkwacfzomfcqxu.supabase.co',
+      anonKey: 'sb_publishable_qC70BeNwXBj2nYLxeWriPg_Y_uKJkoh',
+    ).timeout(const Duration(seconds: 10));
 
-  // تسجيل دخول تلقائي (مخفي) لو مفيش مستخدم
-  final auth = Supabase.instance.client.auth;
-  if (auth.currentSession == null) {
-    await auth.signInAnonymously();
+    final auth = Supabase.instance.client.auth;
+    if (auth.currentSession == null) {
+      // تسجيل دخول تلقائي بحد أقصى 10 ثواني
+      await auth.signInAnonymously().timeout(const Duration(seconds: 10));
+    }
+  } catch (e) {
+    // لو حصل خطأ، بنطبعه في الكونسول وبنكمل عشان التطبيق يفتح
+    debugPrint('Supabase Error: $e');
   }
 
   runApp(const ProviderScope(child: MohamedAiApp()));
