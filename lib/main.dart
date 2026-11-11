@@ -3,6 +3,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'features/chat/presentation/chat_screen.dart';
 
 void main() {
+  // السطور دي بتخلي أي خطأ يظهر باللون الأحمر على الشاشة بدل المربع الرمادي
+  ErrorWidget.builder = (FlutterErrorDetails details) {
+    return Container(
+      color: Colors.red,
+      padding: const EdgeInsets.all(20),
+      child: Center(
+        child: Text(
+          'خطأ:\n${details.exceptionAsString()}',
+          style: const TextStyle(color: Colors.white, fontSize: 16),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  };
+
   runApp(const ProviderScope(child: MohamedAiApp()));
 }
 
@@ -25,7 +40,7 @@ class MohamedAiApp extends StatelessWidget {
         textDirection: TextDirection.rtl,
         child: child ?? const SizedBox(),
       ),
-      home: const ChatScreen(), // فتح شاشة الشات مباشرة
+      home: const ChatScreen(),
     );
   }
 }
