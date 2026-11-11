@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart'; // السطر الجديد ده
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'features/chat/presentation/chat_screen.dart';
 
 void main() {
-  // السطور دي بتخلي أي خطأ يظهر باللون الأحمر على الشاشة بدل المربع الرمادي
   ErrorWidget.builder = (FlutterErrorDetails details) {
     return Container(
       color: Colors.red,
@@ -31,6 +31,12 @@ class MohamedAiApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       locale: const Locale('ar', 'EG'),
       supportedLocales: const [Locale('ar', 'EG'), Locale('en')],
+      // السطور دي هي اللي بتفعل الترجمة
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
         useMaterial3: true,
