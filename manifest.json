@@ -1,0 +1,13 @@
+{
+  "name": "محمد AI",
+  "short_name": "محمد AI",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#FAFAFA",
+  "theme_color": "#00897B",
+  "description": "محمد AI — المساعد الشخصي الذكي",
+  "orientation": "portrait-primary",
+  "lang": "ar",
+  "dir": "rtl",
+  "prefer_related_applications": false
+}
